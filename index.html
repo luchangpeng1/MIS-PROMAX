@@ -132,6 +132,23 @@
             background-color: #e74c3c;
         }
         
+        /* 移动端按钮增强 */
+        @media (max-width: 768px) {
+            .speak-btn {
+                padding: 6px 10px; /* 增大点击区域 */
+                font-size: 13px; /* 稍微增大字号 */
+                margin-top: 5px; /* 顶部间距 */
+                -webkit-tap-highlight-color: rgba(0,0,0,0); /* 去除点击高亮 */
+                touch-action: manipulation; /* 优化触摸操作 */
+            }
+            
+            /* 确保按钮有正确的层叠顺序和点击区域 */
+            .question-title {
+                position: relative;
+                z-index: 1;
+            }
+        }
+        
         .chapter {
             margin-bottom: 40px;
             border-radius: 10px;
@@ -763,6 +780,8 @@
     </style>
 </head>
 <body>
+
+
     <h1>管理信息系统(中英)复习资料</h1>
     
     <!-- 控制面板 (桌面版) -->
@@ -899,11 +918,11 @@
                 </div>
                 <div class="answer">
                     <p>（列出五个典型的组织问题）</p>
-                    <p>1. 低效的业务流程</p>
-                    <p>2. 不支持的文化</p>
-                    <p>3. 政治内斗</p>
-                    <p>4. 环境变化</p>
-                    <p>5. 技术过时</p>
+                    <p>1. 低效的业务流程：传统流程缺乏自动化。</p>
+                    <p>2. 不支持的文化：员工抵触技术变革。</p>
+                    <p>3. 政治内斗：部门间因资源分配或权力争夺阻碍系统实施。</p>
+                    <p>4. 环境变化：未能及时应对市场竞争或法规变化。</p>
+                    <p>5. 技术过时：遗留系统无法兼容新技术。</p>
                 </div>
             </div>
         </div>
@@ -949,10 +968,12 @@
                 </div>
                 <div class="answer">
                     <p>（描述事务处理系统（TPS）的特点）</p>
-                    <p>1. 日常交易支持：处理企业核心业务的日常事务。</p>
-                    <p>2. 实时性：实时捕获和处理数据，确保数据即时可用。</p>
-                    <p>3. 基层运营导向：服务于操作层管理，支持结构化、重复性任务。</p>
-                    <p>4. 数据基础作用：为其他系统提供原始交易数据。</p>
+                    <p>1.为运营经理服务。</p>
+                    <p>2.主要目的是回答常规问题并跟踪组织内的交易流程。。</p>
+                    <p>3.监控内部运营状态以及公司与外部环境的关系。</p>
+                    <p>4.为其他系统提供信息的主要来源。</p>
+                    <p>5.为其他系统提供信息的主要来源。</p>
+                 
                 </div>
             </div>
             
@@ -964,14 +985,16 @@
                 <div class="answer">
                     <p>（描述管理信息系统（MIS）和决策支持系统（DSS）的特点）</p>
                     <p><strong>管理信息系统（MIS）：</strong></p>
-                    <p>1. 中层管理支持：为中层管理者提供报表，监控和控制企业绩效。</p>
-                    <p>2. 数据汇总与分析：基于TPS数据生成结构化报告，但分析能力有限。</p>
-                    <p>3. 定期性与标准化：报告按固定周期生成，格式标准化。</p>
+                    <p>1.为中层管理者提供报表，监控和控制企业绩效。</p>
+                    <p>2. 基于TPS数据生成结构化报告。</p>
+                    <p>3. 报告按固定周期生成，格式标准化。</p>
+                    <p>4.通常属于灵活性较低且分析能力有限的系统。。</p>
                     <p><strong>决策支持系统（DSS）：</strong></p>
-                    <p>1. 非结构化决策支持：处理独特、快速变化的问题。</p>
-                    <p>2. 高级分析模型：使用统计模型、数据挖掘等技术。</p>
-                    <p>3. 内外数据整合：结合内部TPS数据与外部数据。</p>
-                    <p>4. 用户主导分析：支持"what-if"模拟，允许管理者自定义分析场景。</p>
+                    <p>1. 服务中层管理者</p>
+                    <p>2. 支持非常规决策制定</p>
+                    <p>3. 通常同时使用来自 TPS和MIS的外部信息</p>
+                    <p>4. 模型驱动型 DSS</p>
+                    <p>5. 数据驱动型 DSS</p>
                 </div>
             </div>
         </div>
@@ -986,7 +1009,7 @@
                     <button class="show-btn">显示答案</button>
                 </div>
                 <div class="answer">
-                    <p>最佳实践是指由咨询公司、研究机构等认定的，在特定领域中被证明为最成功的解决方案或问题解决方法，用于基准化和改进企业流程。</p>
+                    <p>最佳实践是指为持续且有效地实现商业目标的最成功的解决方案或解决问题的方法。</p>
                 </div>
             </div>
             
@@ -1070,11 +1093,11 @@
                 <div class="answer">
                     <p>（列出并描述当今可指导我们行为的伦理规则）</p>
                     <p>1. 黄金法则：己所不欲，勿施于人。</p>
-                    <p>2. 康德的绝对命令：若某一行为对所有人均不可行，则对任何人都不可行。</p>
-                    <p>3. 笛卡尔的变化规则：若某一行为无法重复执行，则单次执行也不可取（"滑坡效应"）。</p>
-                    <p>4. 功利主义原则：选择能实现最大价值或最大善的行为。</p>
-                    <p>5. 风险规避原则：避免具有高失败成本的行为。</p>
-                    <p>6. "无免费午餐"规则：假定所有有形和无形物品均有所有者，未经允许不得使用。</p>
+                    <p>2. 康德的绝对命令：行为若对所有人不可行，则对任何人都不可行。</p>
+                    <p>3. 笛卡尔的变化规则：行为若无法重复执行，单次也不可取（滑坡效应）。</p>
+                    <p>4. 功利主义原则：选择实现最大价值或善的行为。</p>
+                    <p>5. 风险规避原则：避免高失败成本的行为。</p>
+                    <p>6. "无免费午餐"规则：物品有所有者，未经允许不得使用。</p>
                 </div>
             </div>
         </div>
@@ -1089,7 +1112,8 @@
                     <button class="show-btn">显示答案</button>
                 </div>
                 <div class="answer">
-                    <p>指通过伪造身份或信息来欺骗目标系统或用户，以获取非法访问、窃取数据或实施攻击的行为。</p>
+                    <p>利用虚假电子邮件地址歪曲身份或冒充他人。</p>
+                    <p>将网页链接重定向至与预期不同的地址，且该网站伪装成预期目标。</p>
                 </div>
             </div>
             
@@ -1100,8 +1124,12 @@
                 </div>
                 <div class="answer">
                     <p>（对称加密与公钥加密的对比）</p>
-                    <p>对称加密使用单一密钥，加密和解密过程均使用同一密钥，速度快但密钥管理复杂；</p>
-                    <p>公钥加密使用成对的公钥和私钥，公钥公开用于加密，私钥保密用于解密，适合大规模网络环境但计算开销较大。</p>
+                    <p><strong>对称密钥加密</strong></p>
+                    <p>发送方和接收方使用单一的共享密钥。</p>
+                    <p><strong>公钥加密</strong></p>
+                    <p>使用两个数学上相关的密钥：公钥和私钥。</p>
+                    <p>发送方用接收方的公钥加密消息。</p>
+                    <p>接收方用私钥解密。</p>
                 </div>
             </div>
         </div>
@@ -1147,7 +1175,19 @@
                 </div>
                 <div class="answer">
                     <p>（区分供应计划系统（Supply Planning System）和供应执行系统（Supply Execution System））</p>
-                    <p>供应计划系统专注于需求预测和资源配置优化，而执行系统则处理实时物流、库存跟踪和订单履行。</p>
+                    <p><strong>供应链计划系统</strong></p>
+                    <p>对现有供应链进行建模。</p>
+                    <p>需求规划。</p>
+                    <p>优化采购、生产计划。</p>
+                    <p>确定库存水平。</p>
+                    <p>确定运输方式。</p>
+                    <p><strong>供应链执行系统</strong></p>
+                    <p>管理产品通过配送中心和仓库的流动。</p>
+
+
+                    
+
+
                 </div>
             </div>
             
@@ -1158,7 +1198,12 @@
                 </div>
                 <div class="answer">
                     <p>（区分分析型CRM（Analytical CRM）和运营型CRM（Operational CRM））</p>
-                    <p>分析型客户关系管理专注于通过数据分析来理解客户行为，而运营型客户关系管理则自动化销售和客户服务等前台业务流程。</p>
+                    <p><strong>运营型 CRM：</strong></p>
+                    <p>面向客户的应用，如销售自动化、呼叫中心与客户服务支持，以及营销自动化。</p>
+                    <p><strong>分析型 CRM：</strong></p>
+                    <p>基于由运营型 CRM 系统和客户接触点填充的数据仓库。</p>
+                    <p>分析客户数据（联机分析处理、数据挖掘等）。</p>
+                    <p>（涉及）客户终身价值（CLTV）。</p>
                 </div>
             </div>
             
@@ -1222,7 +1267,7 @@
                     <button class="show-btn">显示答案</button>
                 </div>
                 <div class="answer">
-                    <p>隐性知识是指难以形式化、编码或通过书面文字传递的知识，通常基于个人经验、直觉和洞察力，存在于个体头脑中，难以被组织系统捕获或存储。</p>
+                    <p>隐性知识是难以形式化、编码或书面传递的知识，基于个人经验与直觉，存在于个体头脑中，难以被组织系统捕获或存储。</p>
                 </div>
             </div>
             
@@ -1243,12 +1288,14 @@
                 </div>
                 <div class="answer">
                     <p>（什么是案例推理（Case-Based Reasoning, CBR）？它如何运作？）</p>
-                    <p><strong>定义</strong>：案例推理是一种人工智能技术，通过检索和重用过去类似问题的解决方案来解决新问题，适用于缺乏明确规则或需要经验判断的场景。</p>
+                    <p><strong>定义</strong>：基于案例的推理是将人类专家的知识和过往经验以案例形式存入数据库。当新问题出现时，系统找出最相似案例，应用其解决方案，并在数据库中标记成败。</p>
                     <p><strong>工作流程</strong>：</p>
-                    <p>1. 案例检索：从案例库中查找与当前问题最相似的历史案例。</p>
-                    <p>2. 案例重用：借鉴历史案例的解决方案，调整参数以适配当前问题。</p>
-                    <p>3. 案例调整：根据当前问题的特异性修改解决方案。</p>
-                    <p>4. 案例存储：将新解决方案存入案例库，供未来使用。</p>
+                    <p>1. 用户描述问题。</p>
+                    <p>2. 系统搜索数据库以查找相似案例。</p>
+                    <p>3. 系统询问用户额外问题以缩小搜索范围。</p>
+                    <p>4. 系统找到最匹配的案例并检索解决方案。</p>
+                    <p>5. 系统修改解决方案以更好地适配问题。</p>
+                    <p>6. 判断是否成功：若成功，将问题和成功解决方案存储到数据库；若不成功，重复上述步骤。</p>
                 </div>
             </div>
             
@@ -1333,6 +1380,7 @@
     </div>
     
     <script>
+        // 原始脚本保持不变
         // 获取所有显示/隐藏答案按钮
         const showButtons = document.querySelectorAll('.show-btn');
         
@@ -1372,6 +1420,7 @@
                     speakBtn.className = 'speak-btn';
                     speakBtn.textContent = '播放英文';
                     speakBtn.setAttribute('title', '播放题目英文');
+                    speakBtn.setAttribute('type', 'button'); // 确保不是默认提交按钮
                     
                     // 将按钮添加到标题后面
                     titleSpan.parentElement.insertBefore(speakBtn, titleSpan.nextSibling);
@@ -1379,43 +1428,84 @@
                     // 显示按钮
                     speakBtn.style.display = 'inline-block';
                     
-                    // 添加点击事件
+                    // 添加点击事件 - 同时处理点击和触摸
                     speakBtn.addEventListener('click', function(event) {
                         speak(title, event);
                     });
+                    
+                    // 为移动设备添加触摸事件
+                    speakBtn.addEventListener('touchstart', function(event) {
+                        // 阻止触摸事件后的点击事件，防止双重触发
+                        event.preventDefault();
+                        speak(title, event);
+                    }, { passive: false });
                 }
             });
         }
         
         // 语音播放函数
         function speak(text, event) {
-            // 停止当前正在播放的语音
-            window.speechSynthesis.cancel();
+            // 防止事件冒泡和默认行为
+            event.preventDefault();
+            event.stopPropagation();
             
-            // 获取所有播放按钮
-            const allSpeakButtons = document.querySelectorAll('.speak-btn');
-            allSpeakButtons.forEach(btn => {
-                btn.classList.remove('speaking');
-            });
+            // 检查浏览器是否支持语音合成API
+            if (!window.speechSynthesis) {
+                alert('很抱歉，您的浏览器不支持语音合成功能。请尝试使用Chrome、Edge或Safari浏览器。');
+                return;
+            }
             
-            // 设置当前按钮状态
-            const button = event.currentTarget;
-            button.classList.add('speaking');
-            
-            // 创建语音对象
-            const speech = new SpeechSynthesisUtterance();
-            speech.text = text;
-            speech.lang = 'en-US';
-            speech.rate = 0.9;  // 语速稍慢一点
-            speech.pitch = 1;
-            
-            // 语音结束时恢复按钮状态
-            speech.onend = function() {
-                button.classList.remove('speaking');
-            };
-            
-            // 播放语音
-            window.speechSynthesis.speak(speech);
+            try {
+                // 停止当前正在播放的语音
+                window.speechSynthesis.cancel();
+                
+                // 获取所有播放按钮
+                const allSpeakButtons = document.querySelectorAll('.speak-btn');
+                allSpeakButtons.forEach(btn => {
+                    btn.classList.remove('speaking');
+                });
+                
+                // 设置当前按钮状态
+                const button = event.currentTarget;
+                button.classList.add('speaking');
+                button.textContent = '播放中...';
+                
+                // 创建语音对象
+                const speech = new SpeechSynthesisUtterance();
+                speech.text = text;
+                speech.lang = 'en-US';
+                speech.rate = 0.9;  // 语速稍慢一点
+                speech.pitch = 1;
+                
+                // 语音结束时恢复按钮状态
+                speech.onend = function() {
+                    button.classList.remove('speaking');
+                    button.textContent = '播放英文';
+                };
+                
+                // 语音出错时处理
+                speech.onerror = function(event) {
+                    console.error('语音合成错误:', event);
+                    button.classList.remove('speaking');
+                    button.textContent = '播放失败';
+                    
+                    setTimeout(() => {
+                        button.textContent = '播放英文';
+                    }, 2000);
+                };
+                
+                // 解决Safari在iOS上的问题
+                if (navigator.userAgent.match(/iPhone|iPad|iPod/i)) {
+                    setTimeout(() => {
+                        window.speechSynthesis.speak(speech);
+                    }, 100);
+                } else {
+                    window.speechSynthesis.speak(speech);
+                }
+            } catch (error) {
+                console.error('语音合成出现异常:', error);
+                alert('语音播放失败，请尝试使用其他浏览器。');
+            }
         }
         
         // 添加目录导航功能
@@ -1669,6 +1759,7 @@
                     speakBtn.textContent = '播放英文';
                     speakBtn.style.display = 'inline-block';
                     speakBtn.style.marginTop = '10px';
+                    speakBtn.setAttribute('type', 'button');
                     
                     // 添加到显示答案按钮前面
                     showAnswerBtn.parentElement.insertBefore(speakBtn, showAnswerBtn);
@@ -1677,6 +1768,12 @@
                     speakBtn.addEventListener('click', function(event) {
                         speak(title, event);
                     });
+                    
+                    // 为移动设备添加触摸事件
+                    speakBtn.addEventListener('touchstart', function(event) {
+                        event.preventDefault();
+                        speak(title, event);
+                    }, { passive: false });
                 }
             }
         }
