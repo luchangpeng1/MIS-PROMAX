@@ -851,6 +851,104 @@
             margin-right: 8px;
         }
         
+        /* 按钮显示控制样式 */
+        #buttons-control-section {
+            background-color: rgba(155, 89, 182, 0.1);
+            border-left: 3px solid #9b59b6;
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 5px;
+        }
+        
+        #buttons-control-section .side-nav-title {
+            color: #9b59b6;
+            display: flex;
+            align-items: center;
+        }
+        
+        #buttons-control-section .side-nav-title::before {
+            content: "🎛️";
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        #toggle-all-buttons {
+            background-color: #9b59b6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 14px 15px;
+            font-size: 15px;
+            font-weight: bold;
+            color: white;
+        }
+        
+        #toggle-all-buttons:hover,
+        #toggle-all-buttons:active {
+            background-color: #8e44ad;
+        }
+        
+        #toggle-all-buttons::before {
+            content: "按钮";
+            background-color: white;
+            color: #9b59b6;
+            font-size: 12px;
+            border-radius: 4px;
+            padding: 2px 4px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        /* 按钮隐藏时的样式 */
+        .question-buttons-hidden .show-btn,
+        .question-buttons-hidden .toggle-cn-btn,
+        .question-buttons-hidden .speak-btn {
+            display: none !important;
+        }
+        
+        /* 快速恢复按钮的浮动图标 */
+        #restore-buttons-icon {
+            position: fixed;
+            bottom: 75px;
+            right: 20px;
+            width: 44px;
+            height: 44px;
+            border-radius: 50%;
+            background-color: #9b59b6;
+            color: white;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 3px 8px rgba(0, 0, 0, 0.3);
+            z-index: 999;
+            cursor: pointer;
+            font-size: 22px;
+            transition: all 0.3s ease;
+        }
+        
+        #restore-buttons-icon:hover,
+        #restore-buttons-icon:active {
+            background-color: #8e44ad;
+            transform: scale(1.05);
+        }
+        
+        .question-buttons-hidden #restore-buttons-icon {
+            display: flex;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% {
+                box-shadow: 0 0 0 0 rgba(155, 89, 182, 0.7);
+            }
+            70% {
+                box-shadow: 0 0 0 10px rgba(155, 89, 182, 0);
+            }
+            100% {
+                box-shadow: 0 0 0 0 rgba(155, 89, 182, 0);
+            }
+        }
+        
         /* 移动端适配 */
         @media (max-width: 768px) {
             body {
@@ -931,6 +1029,24 @@
             /* 侧边栏中的中文切换按钮突出显示 */
             #side-toggle-all-cn {
                 font-weight: bold;
+            }
+            
+            /* 移动端浮动按钮位置调整 */
+            #restore-buttons-icon {
+                bottom: 20px;
+                right: 70px;  /* 避免与返回顶部按钮重叠 */
+            }
+            
+            /* 移动端按钮控制专区强调 */
+            #buttons-control-section {
+                margin-top: 10px;
+                margin-bottom: 10px;
+                border-width: 4px;
+            }
+            
+            #toggle-all-buttons {
+                padding: 15px;
+                font-size: 16px;
             }
         }
     </style>
@@ -1757,6 +1873,115 @@
                             sideNavContent.appendChild(chineseToggleSection);
                         }
                     }
+                }
+                
+                // 添加按钮控制区域
+                const sideNavContent = document.querySelector('.side-nav-content');
+                if (sideNavContent) {
+                    // 创建按钮控制区域
+                    const buttonsControlSection = document.createElement('div');
+                    buttonsControlSection.className = 'side-nav-section';
+                    buttonsControlSection.id = 'buttons-control-section';
+                    
+                    const buttonsControlTitle = document.createElement('div');
+                    buttonsControlTitle.className = 'side-nav-title';
+                    buttonsControlTitle.textContent = '按钮显示控制';
+                    
+                    const buttonsControlContent = document.createElement('div');
+                    buttonsControlContent.className = 'side-nav-control';
+                    
+                    // 创建控制所有按钮的按钮
+                    const toggleAllButtonsBtn = document.createElement('button');
+                    toggleAllButtonsBtn.className = 'side-nav-btn';
+                    toggleAllButtonsBtn.id = 'toggle-all-buttons';
+                    toggleAllButtonsBtn.textContent = '隐藏所有按钮';
+                    toggleAllButtonsBtn.setAttribute('aria-label', '显示或隐藏题目后的所有按钮');
+                    
+                    toggleAllButtonsBtn.addEventListener('click', function() {
+                        const body = document.body;
+                        if (body.classList.contains('question-buttons-hidden')) {
+                            // 当前按钮已隐藏，需要显示
+                            body.classList.remove('question-buttons-hidden');
+                            this.textContent = '隐藏所有按钮';
+                        } else {
+                            // 当前按钮已显示，需要隐藏
+                            body.classList.add('question-buttons-hidden');
+                            this.textContent = '显示所有按钮';
+                        }
+                    });
+                    
+                    // 组装控制区域
+                    buttonsControlContent.appendChild(toggleAllButtonsBtn);
+                    buttonsControlSection.appendChild(buttonsControlTitle);
+                    buttonsControlSection.appendChild(buttonsControlContent);
+                    
+                    // 查找中文控制区
+                    const chineseToggleSection = document.getElementById('chinese-toggle-section');
+                    if (chineseToggleSection) {
+                        // 将按钮控制区插入到中文控制区后面
+                        sideNavContent.insertBefore(buttonsControlSection, chineseToggleSection.nextSibling);
+                    } else {
+                        // 如果没有找到中文控制区，则插入到第一个区域后面
+                        const firstSection = sideNavContent.querySelector('.side-nav-section');
+                        if (firstSection && firstSection.nextSibling) {
+                            sideNavContent.insertBefore(buttonsControlSection, firstSection.nextSibling.nextSibling);
+                        } else {
+                            sideNavContent.appendChild(buttonsControlSection);
+                        }
+                    }
+                    
+                    // 添加一个固定的恢复按钮图标（当所有按钮被隐藏时可见）
+                    const restoreButtonsIcon = document.createElement('div');
+                    restoreButtonsIcon.id = 'restore-buttons-icon';
+                    restoreButtonsIcon.innerHTML = '<div>⚙️</div>';
+                    restoreButtonsIcon.setAttribute('title', '显示所有按钮');
+                    
+                    restoreButtonsIcon.addEventListener('click', function() {
+                        // 恢复按钮显示
+                        document.body.classList.remove('question-buttons-hidden');
+                        // 同步更新侧边栏按钮状态
+                        const toggleAllButtonsBtn = document.getElementById('toggle-all-buttons');
+                        if (toggleAllButtonsBtn) {
+                            toggleAllButtonsBtn.textContent = '隐藏所有按钮';
+                        }
+                        // 关闭侧边栏（如果已经打开）
+                        const sideNav = document.getElementById('sideNav');
+                        const overlay = document.getElementById('overlay');
+                        if (sideNav.classList.contains('open')) {
+                            sideNav.classList.remove('open');
+                            overlay.classList.remove('open');
+                        }
+                        
+                        // 短暂显示提示消息
+                        const messageContainer = document.createElement('div');
+                        messageContainer.style.position = 'fixed';
+                        messageContainer.style.bottom = '120px';
+                        messageContainer.style.left = '50%';
+                        messageContainer.style.transform = 'translateX(-50%)';
+                        messageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                        messageContainer.style.color = 'white';
+                        messageContainer.style.padding = '8px 16px';
+                        messageContainer.style.borderRadius = '20px';
+                        messageContainer.style.fontSize = '14px';
+                        messageContainer.style.zIndex = '1000';
+                        messageContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+                        messageContainer.textContent = '按钮已恢复显示';
+                        
+                        document.body.appendChild(messageContainer);
+                        
+                        // 2秒后移除提示
+                        setTimeout(() => {
+                            messageContainer.style.opacity = '0';
+                            messageContainer.style.transition = 'opacity 0.5s ease';
+                            setTimeout(() => {
+                                if (messageContainer.parentNode) {
+                                    messageContainer.parentNode.removeChild(messageContainer);
+                                }
+                            }, 500);
+                        }, 2000);
+                    });
+                    
+                    document.body.appendChild(restoreButtonsIcon);
                 }
             }
         }
