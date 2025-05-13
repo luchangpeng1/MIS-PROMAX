@@ -1696,27 +1696,7 @@
                     titleSpan.innerHTML = englishPart + 
                         '<span class="chinese-note">' + chinesePart + '</span>';
                     
-                    // 创建切换中文注释的按钮
-                    const toggleCnBtn = document.createElement('button');
-                    toggleCnBtn.className = 'toggle-cn-btn';
-                    toggleCnBtn.textContent = '隐藏中文';
-                    toggleCnBtn.setAttribute('title', '显示/隐藏中文注释');
-                    toggleCnBtn.setAttribute('type', 'button');
-                    
-                    // 将按钮添加到标题行
-                    titleSpan.parentElement.insertBefore(toggleCnBtn, titleSpan.nextElementSibling);
-                    
-                    // 添加按钮点击事件
-                    toggleCnBtn.addEventListener('click', function() {
-                        const chineseNote = titleSpan.querySelector('.chinese-note');
-                        if (chineseNote.classList.contains('hidden')) {
-                            chineseNote.classList.remove('hidden');
-                            this.textContent = '隐藏中文';
-                        } else {
-                            chineseNote.classList.add('hidden');
-                            this.textContent = '显示中文';
-                        }
-                    });
+                    // 不再创建每个题目的切换中文注释按钮
                 }
                 
                 // 处理完全中文的标题（无需添加按钮）
@@ -1736,34 +1716,14 @@
                     // 创建新的HTML结构
                     titleSpan.innerHTML = term + '(' + abbr + ')<span class="chinese-note">（' + chinese + '）</span>';
                     
-                    // 创建切换中文注释的按钮
-                    const toggleCnBtn = document.createElement('button');
-                    toggleCnBtn.className = 'toggle-cn-btn';
-                    toggleCnBtn.textContent = '隐藏中文';
-                    toggleCnBtn.setAttribute('title', '显示/隐藏中文注释');
-                    toggleCnBtn.setAttribute('type', 'button');
-                    
-                    // 将按钮添加到标题行
-                    titleSpan.parentElement.insertBefore(toggleCnBtn, titleSpan.nextElementSibling);
-                    
-                    // 添加按钮点击事件
-                    toggleCnBtn.addEventListener('click', function() {
-                        const chineseNote = titleSpan.querySelector('.chinese-note');
-                        if (chineseNote.classList.contains('hidden')) {
-                            chineseNote.classList.remove('hidden');
-                            this.textContent = '隐藏中文';
-                        } else {
-                            chineseNote.classList.add('hidden');
-                            this.textContent = '显示中文';
-                        }
-                    });
+                    // 不再创建每个题目的切换中文注释按钮
                 }
                 
                 // 处理"中文（英文）"格式
                 const reversedPattern = /([\u4e00-\u9fa5]+)（([A-Za-z\s\-]+)）/;
                 const reversedMatch = titleText.match(reversedPattern);
                 if (reversedMatch && !chineseNoteMatch && !complexMatch) {
-                    // 对于这种格式，不需要添加切换按钮，因为中文是主体内容
+                    // 对于这种格式，原本就不添加切换按钮，因为中文是主体内容
                     return;
                 }
             });
@@ -1777,7 +1737,6 @@
                 toggleAllChineseBtn.textContent = '隐藏所有中文';
                 toggleAllChineseBtn.addEventListener('click', function() {
                     const allChineseNotes = document.querySelectorAll('.chinese-note');
-                    const allToggleButtons = document.querySelectorAll('.toggle-cn-btn');
                     
                     // 检查是否有至少一个中文注释是可见的
                     let hasVisible = false;
@@ -1792,12 +1751,10 @@
                     if (hasVisible) {
                         // 隐藏所有中文注释
                         allChineseNotes.forEach(note => note.classList.add('hidden'));
-                        allToggleButtons.forEach(btn => btn.textContent = '显示中文');
                         this.textContent = '显示所有中文';
                     } else {
                         // 显示所有中文注释
                         allChineseNotes.forEach(note => note.classList.remove('hidden'));
-                        allToggleButtons.forEach(btn => btn.textContent = '隐藏中文');
                         this.textContent = '隐藏所有中文';
                     }
                 });
@@ -1873,115 +1830,6 @@
                             sideNavContent.appendChild(chineseToggleSection);
                         }
                     }
-                }
-                
-                // 添加按钮控制区域
-                const sideNavContent = document.querySelector('.side-nav-content');
-                if (sideNavContent) {
-                    // 创建按钮控制区域
-                    const buttonsControlSection = document.createElement('div');
-                    buttonsControlSection.className = 'side-nav-section';
-                    buttonsControlSection.id = 'buttons-control-section';
-                    
-                    const buttonsControlTitle = document.createElement('div');
-                    buttonsControlTitle.className = 'side-nav-title';
-                    buttonsControlTitle.textContent = '按钮显示控制';
-                    
-                    const buttonsControlContent = document.createElement('div');
-                    buttonsControlContent.className = 'side-nav-control';
-                    
-                    // 创建控制所有按钮的按钮
-                    const toggleAllButtonsBtn = document.createElement('button');
-                    toggleAllButtonsBtn.className = 'side-nav-btn';
-                    toggleAllButtonsBtn.id = 'toggle-all-buttons';
-                    toggleAllButtonsBtn.textContent = '隐藏所有按钮';
-                    toggleAllButtonsBtn.setAttribute('aria-label', '显示或隐藏题目后的所有按钮');
-                    
-                    toggleAllButtonsBtn.addEventListener('click', function() {
-                        const body = document.body;
-                        if (body.classList.contains('question-buttons-hidden')) {
-                            // 当前按钮已隐藏，需要显示
-                            body.classList.remove('question-buttons-hidden');
-                            this.textContent = '隐藏所有按钮';
-                        } else {
-                            // 当前按钮已显示，需要隐藏
-                            body.classList.add('question-buttons-hidden');
-                            this.textContent = '显示所有按钮';
-                        }
-                    });
-                    
-                    // 组装控制区域
-                    buttonsControlContent.appendChild(toggleAllButtonsBtn);
-                    buttonsControlSection.appendChild(buttonsControlTitle);
-                    buttonsControlSection.appendChild(buttonsControlContent);
-                    
-                    // 查找中文控制区
-                    const chineseToggleSection = document.getElementById('chinese-toggle-section');
-                    if (chineseToggleSection) {
-                        // 将按钮控制区插入到中文控制区后面
-                        sideNavContent.insertBefore(buttonsControlSection, chineseToggleSection.nextSibling);
-                    } else {
-                        // 如果没有找到中文控制区，则插入到第一个区域后面
-                        const firstSection = sideNavContent.querySelector('.side-nav-section');
-                        if (firstSection && firstSection.nextSibling) {
-                            sideNavContent.insertBefore(buttonsControlSection, firstSection.nextSibling.nextSibling);
-                        } else {
-                            sideNavContent.appendChild(buttonsControlSection);
-                        }
-                    }
-                    
-                    // 添加一个固定的恢复按钮图标（当所有按钮被隐藏时可见）
-                    const restoreButtonsIcon = document.createElement('div');
-                    restoreButtonsIcon.id = 'restore-buttons-icon';
-                    restoreButtonsIcon.innerHTML = '<div>⚙️</div>';
-                    restoreButtonsIcon.setAttribute('title', '显示所有按钮');
-                    
-                    restoreButtonsIcon.addEventListener('click', function() {
-                        // 恢复按钮显示
-                        document.body.classList.remove('question-buttons-hidden');
-                        // 同步更新侧边栏按钮状态
-                        const toggleAllButtonsBtn = document.getElementById('toggle-all-buttons');
-                        if (toggleAllButtonsBtn) {
-                            toggleAllButtonsBtn.textContent = '隐藏所有按钮';
-                        }
-                        // 关闭侧边栏（如果已经打开）
-                        const sideNav = document.getElementById('sideNav');
-                        const overlay = document.getElementById('overlay');
-                        if (sideNav.classList.contains('open')) {
-                            sideNav.classList.remove('open');
-                            overlay.classList.remove('open');
-                        }
-                        
-                        // 短暂显示提示消息
-                        const messageContainer = document.createElement('div');
-                        messageContainer.style.position = 'fixed';
-                        messageContainer.style.bottom = '120px';
-                        messageContainer.style.left = '50%';
-                        messageContainer.style.transform = 'translateX(-50%)';
-                        messageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
-                        messageContainer.style.color = 'white';
-                        messageContainer.style.padding = '8px 16px';
-                        messageContainer.style.borderRadius = '20px';
-                        messageContainer.style.fontSize = '14px';
-                        messageContainer.style.zIndex = '1000';
-                        messageContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
-                        messageContainer.textContent = '按钮已恢复显示';
-                        
-                        document.body.appendChild(messageContainer);
-                        
-                        // 2秒后移除提示
-                        setTimeout(() => {
-                            messageContainer.style.opacity = '0';
-                            messageContainer.style.transition = 'opacity 0.5s ease';
-                            setTimeout(() => {
-                                if (messageContainer.parentNode) {
-                                    messageContainer.parentNode.removeChild(messageContainer);
-                                }
-                            }, 500);
-                        }, 2000);
-                    });
-                    
-                    document.body.appendChild(restoreButtonsIcon);
                 }
             }
         }
@@ -2579,6 +2427,115 @@
             // 更新可见的题目数量
             const visibleQuestions = document.querySelectorAll('.question[style="display: block;"]').length;
             document.getElementById('total-questions').textContent = `${visibleQuestions} / ${questions.length}`;
+        }
+        
+        // 添加按钮控制区域
+        const sideNavContent = document.querySelector('.side-nav-content');
+        if (sideNavContent) {
+            // 创建按钮控制区域
+            const buttonsControlSection = document.createElement('div');
+            buttonsControlSection.className = 'side-nav-section';
+            buttonsControlSection.id = 'buttons-control-section';
+            
+            const buttonsControlTitle = document.createElement('div');
+            buttonsControlTitle.className = 'side-nav-title';
+            buttonsControlTitle.textContent = '按钮显示控制';
+            
+            const buttonsControlContent = document.createElement('div');
+            buttonsControlContent.className = 'side-nav-control';
+            
+            // 创建控制所有按钮的按钮
+            const toggleAllButtonsBtn = document.createElement('button');
+            toggleAllButtonsBtn.className = 'side-nav-btn';
+            toggleAllButtonsBtn.id = 'toggle-all-buttons';
+            toggleAllButtonsBtn.textContent = '隐藏所有按钮';
+            toggleAllButtonsBtn.setAttribute('aria-label', '显示或隐藏题目后的所有按钮');
+            
+            toggleAllButtonsBtn.addEventListener('click', function() {
+                const body = document.body;
+                if (body.classList.contains('question-buttons-hidden')) {
+                    // 当前按钮已隐藏，需要显示
+                    body.classList.remove('question-buttons-hidden');
+                    this.textContent = '隐藏所有按钮';
+                } else {
+                    // 当前按钮已显示，需要隐藏
+                    body.classList.add('question-buttons-hidden');
+                    this.textContent = '显示所有按钮';
+                }
+            });
+            
+            // 组装控制区域
+            buttonsControlContent.appendChild(toggleAllButtonsBtn);
+            buttonsControlSection.appendChild(buttonsControlTitle);
+            buttonsControlSection.appendChild(buttonsControlContent);
+            
+            // 查找中文控制区
+            const chineseToggleSection = document.getElementById('chinese-toggle-section');
+            if (chineseToggleSection) {
+                // 将按钮控制区插入到中文控制区后面
+                sideNavContent.insertBefore(buttonsControlSection, chineseToggleSection.nextSibling);
+            } else {
+                // 如果没有找到中文控制区，则插入到第一个区域后面
+                const firstSection = sideNavContent.querySelector('.side-nav-section');
+                if (firstSection && firstSection.nextSibling) {
+                    sideNavContent.insertBefore(buttonsControlSection, firstSection.nextSibling.nextSibling);
+                } else {
+                    sideNavContent.appendChild(buttonsControlSection);
+                }
+            }
+            
+            // 添加一个固定的恢复按钮图标（当所有按钮被隐藏时可见）
+            const restoreButtonsIcon = document.createElement('div');
+            restoreButtonsIcon.id = 'restore-buttons-icon';
+            restoreButtonsIcon.innerHTML = '<div>⚙️</div>';
+            restoreButtonsIcon.setAttribute('title', '显示所有按钮');
+            
+            restoreButtonsIcon.addEventListener('click', function() {
+                // 恢复按钮显示
+                document.body.classList.remove('question-buttons-hidden');
+                // 同步更新侧边栏按钮状态
+                const toggleAllButtonsBtn = document.getElementById('toggle-all-buttons');
+                if (toggleAllButtonsBtn) {
+                    toggleAllButtonsBtn.textContent = '隐藏所有按钮';
+                }
+                // 关闭侧边栏（如果已经打开）
+                const sideNav = document.getElementById('sideNav');
+                const overlay = document.getElementById('overlay');
+                if (sideNav.classList.contains('open')) {
+                    sideNav.classList.remove('open');
+                    overlay.classList.remove('open');
+                }
+                
+                // 短暂显示提示消息
+                const messageContainer = document.createElement('div');
+                messageContainer.style.position = 'fixed';
+                messageContainer.style.bottom = '120px';
+                messageContainer.style.left = '50%';
+                messageContainer.style.transform = 'translateX(-50%)';
+                messageContainer.style.backgroundColor = 'rgba(0, 0, 0, 0.7)';
+                messageContainer.style.color = 'white';
+                messageContainer.style.padding = '8px 16px';
+                messageContainer.style.borderRadius = '20px';
+                messageContainer.style.fontSize = '14px';
+                messageContainer.style.zIndex = '1000';
+                messageContainer.style.boxShadow = '0 2px 8px rgba(0, 0, 0, 0.3)';
+                messageContainer.textContent = '按钮已恢复显示';
+                
+                document.body.appendChild(messageContainer);
+                
+                // 2秒后移除提示
+                setTimeout(() => {
+                    messageContainer.style.opacity = '0';
+                    messageContainer.style.transition = 'opacity 0.5s ease';
+                    setTimeout(() => {
+                        if (messageContainer.parentNode) {
+                            messageContainer.parentNode.removeChild(messageContainer);
+                        }
+                    }, 500);
+                }, 2000);
+            });
+            
+            document.body.appendChild(restoreButtonsIcon);
         }
     </script>
 </body>
