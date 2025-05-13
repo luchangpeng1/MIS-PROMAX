@@ -777,6 +777,162 @@
             background-color: var(--primary-color);
             box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
+        
+        /* 添加中文注释按钮样式 */
+        .toggle-cn-btn {
+            background-color: #e67e22;
+            color: white;
+            border: none;
+            padding: 4px 8px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: background 0.3s;
+            white-space: nowrap;
+            margin-left: 5px;
+        }
+        
+        .toggle-cn-btn:hover {
+            background-color: #d35400;
+        }
+        
+        .chinese-note {
+            display: inline;
+        }
+        
+        .chinese-note.hidden {
+            display: none;
+        }
+        
+        /* 中文注释控制专区样式 */
+        #chinese-toggle-section {
+            background-color: rgba(230, 126, 34, 0.1);
+            border-left: 3px solid #e67e22;
+            margin: 15px 0;
+            padding: 12px;
+            border-radius: 5px;
+        }
+        
+        #chinese-toggle-section .side-nav-title {
+            color: #e67e22;
+            display: flex;
+            align-items: center;
+        }
+        
+        #chinese-toggle-section .side-nav-title::before {
+            content: "🌏";
+            margin-right: 8px;
+            font-size: 18px;
+        }
+        
+        #mobile-toggle-cn {
+            background-color: #e67e22;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 14px 15px;
+            font-size: 15px;
+            font-weight: bold;
+        }
+        
+        #mobile-toggle-cn:hover,
+        #mobile-toggle-cn:active {
+            background-color: #d35400;
+        }
+        
+        #mobile-toggle-cn::before {
+            content: "中/EN";
+            background-color: white;
+            color: #e67e22;
+            font-size: 12px;
+            border-radius: 4px;
+            padding: 2px 4px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+        
+        /* 移动端适配 */
+        @media (max-width: 768px) {
+            body {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 1.5rem;
+                margin-bottom: 15px;
+            }
+            
+            h2 {
+                font-size: 1.3rem;
+            }
+            
+            .control-panel {
+                padding: 10px;
+                flex-direction: column;
+                align-items: stretch;
+                gap: 10px;
+            }
+            
+            .control-btn {
+                width: 100%;
+                padding: 12px;
+            }
+            
+            .question {
+                padding: 12px;
+            }
+            
+            .question-title {
+                flex-direction: row; /* 保持水平布局 */
+                align-items: center; /* 垂直居中 */
+                flex-wrap: wrap; /* 允许在需要时换行 */
+                gap: 8px; /* 减小间距 */
+            }
+            
+            .question-title span {
+                flex: 1; /* 使问题文本占据可用空间 */
+                min-width: 0; /* 允许文本在需要时收缩 */
+                margin-bottom: 0; /* 移除底部边距 */
+                font-size: 14px; /* 稍微减小字体大小 */
+            }
+            
+            .show-btn {
+                flex: 0 0 auto; /* 按钮不伸缩 */
+                width: auto; /* 自适应宽度 */
+                min-width: 60px; /* 确保最小点击区域 */
+                padding: 6px 8px; /* 调整内边距 */
+                font-size: 11px; /* 稍微减小字体 */
+            }
+            
+            .toggle-cn-btn {
+                padding: 6px 10px;
+                font-size: 11px;
+                -webkit-tap-highlight-color: rgba(0,0,0,0);
+                touch-action: manipulation;
+            }
+            
+            .nav-panel {
+                display: none; /* 隐藏原始导航面板 */
+            }
+            
+            .hamburger-btn {
+                display: flex; /* 确保在移动端显示并使用flex布局 */
+                align-items: center;
+                justify-content: center;
+            }
+            
+            .back-to-top {
+                width: 40px;
+                height: 40px;
+                bottom: 20px;
+                right: 20px;
+            }
+            
+            /* 侧边栏中的中文切换按钮突出显示 */
+            #side-toggle-all-cn {
+                font-weight: bold;
+            }
+        }
     </style>
 </head>
 <body>
@@ -1404,6 +1560,207 @@
             });
         });
         
+        // 处理标题中的中文注释
+        function setupChineseNotes() {
+            // 获取所有问题标题
+            const questionTitles = document.querySelectorAll('.question-title span');
+            
+            // 遍历每个标题
+            questionTitles.forEach(titleSpan => {
+                const titleText = titleSpan.textContent;
+                
+                // 检查标题是否包含中文注释（以中文括号开始）
+                const chineseNoteMatch = titleText.match(/（.*?）/);
+                if (chineseNoteMatch) {
+                    // 分离英文和中文部分
+                    const englishPart = titleText.substring(0, chineseNoteMatch.index);
+                    const chinesePart = chineseNoteMatch[0];
+                    
+                    // 创建新的HTML结构
+                    titleSpan.innerHTML = englishPart + 
+                        '<span class="chinese-note">' + chinesePart + '</span>';
+                    
+                    // 创建切换中文注释的按钮
+                    const toggleCnBtn = document.createElement('button');
+                    toggleCnBtn.className = 'toggle-cn-btn';
+                    toggleCnBtn.textContent = '隐藏中文';
+                    toggleCnBtn.setAttribute('title', '显示/隐藏中文注释');
+                    toggleCnBtn.setAttribute('type', 'button');
+                    
+                    // 将按钮添加到标题行
+                    titleSpan.parentElement.insertBefore(toggleCnBtn, titleSpan.nextElementSibling);
+                    
+                    // 添加按钮点击事件
+                    toggleCnBtn.addEventListener('click', function() {
+                        const chineseNote = titleSpan.querySelector('.chinese-note');
+                        if (chineseNote.classList.contains('hidden')) {
+                            chineseNote.classList.remove('hidden');
+                            this.textContent = '隐藏中文';
+                        } else {
+                            chineseNote.classList.add('hidden');
+                            this.textContent = '显示中文';
+                        }
+                    });
+                }
+                
+                // 处理完全中文的标题（无需添加按钮）
+                const isChinese = /^[\u4e00-\u9fa5\s，。？！、；：""''「」『』（）]+$/.test(titleText);
+                if (isChinese) {
+                    return; // 跳过完全中文的标题
+                }
+                
+                // 处理"english(英文缩写)（中文解释）"格式
+                const complexPattern = /([A-Za-z\s\-]+)\(([A-Za-z\s\-]+)\)（([\u4e00-\u9fa5\s]+)）/;
+                const complexMatch = titleText.match(complexPattern);
+                if (complexMatch && !chineseNoteMatch) {
+                    const term = complexMatch[1];
+                    const abbr = complexMatch[2];
+                    const chinese = complexMatch[3];
+                    
+                    // 创建新的HTML结构
+                    titleSpan.innerHTML = term + '(' + abbr + ')<span class="chinese-note">（' + chinese + '）</span>';
+                    
+                    // 创建切换中文注释的按钮
+                    const toggleCnBtn = document.createElement('button');
+                    toggleCnBtn.className = 'toggle-cn-btn';
+                    toggleCnBtn.textContent = '隐藏中文';
+                    toggleCnBtn.setAttribute('title', '显示/隐藏中文注释');
+                    toggleCnBtn.setAttribute('type', 'button');
+                    
+                    // 将按钮添加到标题行
+                    titleSpan.parentElement.insertBefore(toggleCnBtn, titleSpan.nextElementSibling);
+                    
+                    // 添加按钮点击事件
+                    toggleCnBtn.addEventListener('click', function() {
+                        const chineseNote = titleSpan.querySelector('.chinese-note');
+                        if (chineseNote.classList.contains('hidden')) {
+                            chineseNote.classList.remove('hidden');
+                            this.textContent = '隐藏中文';
+                        } else {
+                            chineseNote.classList.add('hidden');
+                            this.textContent = '显示中文';
+                        }
+                    });
+                }
+                
+                // 处理"中文（英文）"格式
+                const reversedPattern = /([\u4e00-\u9fa5]+)（([A-Za-z\s\-]+)）/;
+                const reversedMatch = titleText.match(reversedPattern);
+                if (reversedMatch && !chineseNoteMatch && !complexMatch) {
+                    // 对于这种格式，不需要添加切换按钮，因为中文是主体内容
+                    return;
+                }
+            });
+            
+            // 在全局控制按钮中添加显示/隐藏中文的功能
+            const controlPanel = document.querySelector('.control-panel');
+            if (controlPanel) {
+                const toggleAllChineseBtn = document.createElement('button');
+                toggleAllChineseBtn.className = 'control-btn';
+                toggleAllChineseBtn.id = 'toggle-all-cn';
+                toggleAllChineseBtn.textContent = '隐藏所有中文';
+                toggleAllChineseBtn.addEventListener('click', function() {
+                    const allChineseNotes = document.querySelectorAll('.chinese-note');
+                    const allToggleButtons = document.querySelectorAll('.toggle-cn-btn');
+                    
+                    // 检查是否有至少一个中文注释是可见的
+                    let hasVisible = false;
+                    for (const note of allChineseNotes) {
+                        if (!note.classList.contains('hidden')) {
+                            hasVisible = true;
+                            break;
+                        }
+                    }
+                    
+                    // 根据状态显示或隐藏所有中文注释
+                    if (hasVisible) {
+                        // 隐藏所有中文注释
+                        allChineseNotes.forEach(note => note.classList.add('hidden'));
+                        allToggleButtons.forEach(btn => btn.textContent = '显示中文');
+                        this.textContent = '显示所有中文';
+                    } else {
+                        // 显示所有中文注释
+                        allChineseNotes.forEach(note => note.classList.remove('hidden'));
+                        allToggleButtons.forEach(btn => btn.textContent = '隐藏中文');
+                        this.textContent = '隐藏所有中文';
+                    }
+                });
+                
+                // 添加按钮到控制面板
+                const filterContainer = controlPanel.querySelector('.filter-container');
+                if (filterContainer) {
+                    filterContainer.parentNode.insertBefore(toggleAllChineseBtn, filterContainer);
+                } else {
+                    controlPanel.appendChild(toggleAllChineseBtn);
+                }
+                
+                // 添加到侧边栏控制区域
+                const sideNavControl = document.querySelector('.side-nav-control');
+                if (sideNavControl) {
+                    const sideToggleAllChineseBtn = document.createElement('button');
+                    sideToggleAllChineseBtn.className = 'side-nav-btn';
+                    sideToggleAllChineseBtn.id = 'side-toggle-all-cn';
+                    sideToggleAllChineseBtn.textContent = '隐藏所有中文';
+                    sideToggleAllChineseBtn.setAttribute('aria-label', '显示或隐藏所有中文注释');
+                    
+                    sideToggleAllChineseBtn.addEventListener('click', function() {
+                        document.getElementById('toggle-all-cn').click();
+                        // 更新按钮文本以保持一致性
+                        setTimeout(() => {
+                            this.textContent = document.getElementById('toggle-all-cn').textContent.replace('所有', ''); 
+                        }, 10);
+                    });
+                    
+                    // 将按钮添加为第一个子元素以提高其优先级
+                    if (sideNavControl.firstChild) {
+                        sideNavControl.insertBefore(sideToggleAllChineseBtn, sideNavControl.firstChild);
+                    } else {
+                        sideNavControl.appendChild(sideToggleAllChineseBtn);
+                    }
+                    
+                    // 添加中文切换按钮专属的标题区域
+                    const chineseToggleSection = document.createElement('div');
+                    chineseToggleSection.className = 'side-nav-section';
+                    chineseToggleSection.id = 'chinese-toggle-section';
+                    
+                    const chineseToggleTitle = document.createElement('div');
+                    chineseToggleTitle.className = 'side-nav-title';
+                    chineseToggleTitle.textContent = '中文注释控制';
+                    
+                    const chineseToggleControl = document.createElement('div');
+                    chineseToggleControl.className = 'side-nav-control';
+                    
+                    const mobileToggleCnBtn = document.createElement('button');
+                    mobileToggleCnBtn.className = 'side-nav-btn';
+                    mobileToggleCnBtn.id = 'mobile-toggle-cn';
+                    mobileToggleCnBtn.textContent = '隐藏所有中文注释';
+                    mobileToggleCnBtn.addEventListener('click', function() {
+                        document.getElementById('toggle-all-cn').click();
+                        // 更新按钮文本以保持一致性
+                        setTimeout(() => {
+                            this.textContent = document.getElementById('toggle-all-cn').textContent;
+                        }, 10);
+                    });
+                    
+                    chineseToggleControl.appendChild(mobileToggleCnBtn);
+                    chineseToggleSection.appendChild(chineseToggleTitle);
+                    chineseToggleSection.appendChild(chineseToggleControl);
+                    
+                    // 插入到侧边导航的合适位置
+                    const sideNavContent = document.querySelector('.side-nav-content');
+                    if (sideNavContent) {
+                        // 插入到第一个section后面
+                        const firstSection = sideNavContent.querySelector('.side-nav-section');
+                        if (firstSection) {
+                            sideNavContent.insertBefore(chineseToggleSection, firstSection.nextSibling);
+                        } else {
+                            sideNavContent.appendChild(chineseToggleSection);
+                        }
+                    }
+                }
+            }
+        }
+        
         // 语音播放功能
         function setupSpeechButtons() {
             // 获取所有问题标题
@@ -1512,6 +1869,9 @@
         window.addEventListener('DOMContentLoaded', function() {
             // 初始化统计信息
             updateStats();
+            
+            // 设置中文注释显示/隐藏功能
+            setupChineseNotes();
             
             // 设置筛选按钮事件
             document.getElementById('show-all-types').addEventListener('click', () => filterQuestions('all-types'));
