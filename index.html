@@ -2403,12 +2403,24 @@
             // 计算答案总字数
             let totalWords = 0;
             const answers = document.querySelectorAll('.answer');
+            
             answers.forEach(answer => {
-                // 去除HTML标签，只统计纯文本字数
-                const text = answer.textContent.trim();
-                totalWords += text.length;
+                // 只计算p标签内的纯文本内容
+                const paragraphs = answer.querySelectorAll('p');
+                paragraphs.forEach(paragraph => {
+                    // 去除HTML标签，只计算纯文本
+                    const text = paragraph.textContent.trim();
+                    
+                    // 排除空段落
+                    if (text.length > 0) {
+                        totalWords += text.length;
+                    }
+                });
             });
-            document.getElementById('total-words').textContent = totalWords;
+            
+            // 格式化大数字，每三位数字添加逗号分隔
+            const formattedTotalWords = totalWords.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            document.getElementById('total-words').textContent = formattedTotalWords;
         }
         
         // 筛选题型功能
