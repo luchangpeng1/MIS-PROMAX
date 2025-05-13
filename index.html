@@ -2440,27 +2440,57 @@
                     question.style.display = 'block';
                 });
             } else if (type === 'definitions') {
-                // 筛选名词解释（通常是题目短且包含括号的）
+                // 筛选名词解释
                 questions.forEach(question => {
                     const title = question.querySelector('.question-title span').textContent;
-                    // 名词解释通常包含括号且较短
-                    if (title.includes('（') || title.includes('(') || 
-                        (title.length < 50 && /[A-Za-z]+/.test(title))) {
+                    
+                    // 更精确的名词解释识别逻辑
+                    // 1. 标准格式：英文词汇后跟中文解释，如 "Information system（信息系统）"
+                    // 2. 单个英文短语且长度合理的也是名词解释
+                    const isEnglishWithChinesePattern = /[A-Za-z\s\-\(\)]+（[\u4e00-\u9fa5]+）/.test(title);
+                    const isShortEnglishTerm = title.length < 40 && /^[A-Za-z\s\-\(\)]+$/.test(title);
+                    
+                    // 排除简答题的关键字
+                    const hasSimpleAnswerKeywords = 
+                        title.toLowerCase().includes('describe') || 
+                        title.toLowerCase().includes('list') || 
+                        title.toLowerCase().includes('compare') ||
+                        title.toLowerCase().includes('distinguish') ||
+                        title.toLowerCase().includes('define and') ||
+                        title.toLowerCase().includes('what is') ||
+                        title.toLowerCase().includes('how does');
+                    
+                    if ((isEnglishWithChinesePattern || isShortEnglishTerm) && !hasSimpleAnswerKeywords) {
                         question.style.display = 'block';
                     } else {
                         question.style.display = 'none';
                     }
                 });
             } else if (type === 'short-answers') {
-                // 筛选简答题（通常题目较长且可能包含"简答"、"describe"等关键词）
+                // 筛选简答题
                 questions.forEach(question => {
                     const title = question.querySelector('.question-title span').textContent;
-                    // 简答题通常较长或包含特定关键词
-                    if ((title.length > 50 || 
-                         title.toLowerCase().includes('describe') || 
-                         title.toLowerCase().includes('list') || 
-                         title.toLowerCase().includes('简答') ||
-                         title.toLowerCase().includes('简述'))) {
+                    
+                    // 简答题特征
+                    // 1. 包含特定动词开头：List, Describe, Compare, Define, Distinguish, What is, How
+                    // 2. 较长的问句
+                    const hasSimpleAnswerKeywords = 
+                        title.toLowerCase().includes('describe') || 
+                        title.toLowerCase().includes('list') || 
+                        title.toLowerCase().includes('compare') ||
+                        title.toLowerCase().includes('distinguish') ||
+                        title.toLowerCase().includes('define and') ||
+                        title.toLowerCase().includes('what is') ||
+                        title.toLowerCase().includes('how does');
+                    
+                    // 使用正则表达式匹配以上述关键词开头的模式
+                    const startsWithKeyword = /^(List|Describe|Compare|Distinguish|Define|What|How)\b/i.test(title);
+                    
+                    // 长句子通常是简答题，但要排除名词解释
+                    const isLongSentence = title.length > 40;
+                    const isNotDefinition = !/[A-Za-z\s\-\(\)]+（[\u4e00-\u9fa5]+）/.test(title);
+                    
+                    if ((hasSimpleAnswerKeywords || startsWithKeyword || (isLongSentence && isNotDefinition))) {
                         question.style.display = 'block';
                     } else {
                         question.style.display = 'none';
